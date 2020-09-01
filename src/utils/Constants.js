@@ -370,6 +370,52 @@ const cartCalculation2 = (items = [], extraCharges = []) => {
 
 }
 
+// condition to allow placing order
+const placeOrderConditions = [
+  {
+    type: 'range',
+    property: 'weight',
+    min: 0,
+    max: 3000
+  }
+]
+
+const deliveryFeeMethods = [
+  {
+    code: 'deliveryFee',
+    type: 'static',
+    defaultValue: 123
+  },
+  {
+    code: 'deliveryFee',
+    type: 'dynamic',
+    defaultValue: 80,
+    conditions: [
+      {
+        type: 'range',
+        property: 'weight',
+        min: 0,
+        max: 1000,
+        value: 80
+      },
+      {
+        type: 'range',
+        property: 'weight',
+        min: 1000,
+        max: 2000,
+        value: 96
+      },
+      {
+        type: 'range',
+        property: 'weight',
+        min: 2000,
+        max: 3000,
+        value: 116
+      }
+    ]
+  }
+]
+
 export const cartCalculation = (items = [], deliveryFee = 0, extraCharges = []) => {
   let result = {
     type: stockLocation,
@@ -395,7 +441,7 @@ export const cartCalculation = (items = [], deliveryFee = 0, extraCharges = []) 
       }
     })
   
-    if (stockLocation == '1') {
+    if (stockLocation == '0') {
       /*
       max weight: 2kg
   
@@ -413,51 +459,7 @@ export const cartCalculation = (items = [], deliveryFee = 0, extraCharges = []) 
   
       // console.log('itemsitems',items)
   
-      // condition to allow placing order
-      const placeOrderConditions = [
-        {
-          type: 'range',
-          property: 'weight',
-          min: 0,
-          max: 3000
-        }
-      ]
-  
-      const deliveryFeeMethods = [
-        {
-          code: 'deliveryFee',
-          type: 'static',
-          defaultValue: 123
-        },
-        {
-          code: 'deliveryFee',
-          type: 'dynamic',
-          defaultValue: 80,
-          conditions: [
-            {
-              type: 'range',
-              property: 'weight',
-              min: 0,
-              max: 1000,
-              value: 80
-            },
-            {
-              type: 'range',
-              property: 'weight',
-              min: 1000,
-              max: 2000,
-              value: 96
-            },
-            {
-              type: 'range',
-              property: 'weight',
-              min: 2000,
-              max: 3000,
-              value: 116
-            }
-          ]
-        }
-      ]
+      
   
       // const customChargesFields = [
       //   {
@@ -526,6 +528,48 @@ export const cartCalculation = (items = [], deliveryFee = 0, extraCharges = []) 
         type: stockLocation,
         items: items,
         deliveryFee: deliveryFeeResult != null ? deliveryFeeResult.value : null,
+        charges: allCharges,
+        total: total,
+        subTotal: subTotal,
+        allowOrder: allowPlacingOrder,
+        totalWeight: totalWeight
+      }
+    }
+    else {
+      let initialWeight = 300;
+      let allowPlacingOrder = true;
+      let message = "";
+  
+      if (placeOrderConditions.length == 0) {
+        allowPlacingOrder = true;
+      }
+      else {
+        let checkedOrderResult = conditionRangeChecker(items, placeOrderConditions[0], initialWeight);
+        if (checkedOrderResult != null && !checkedOrderResult.success) {
+          allowPlacingOrder = false;
+          message += '\n' + checkedOrderResult.message;
+        }
+      }
+
+      let totalWeight = getTotalFromItems(items, 'weight', 300);
+      let allCharges = [
+        {
+          code: 'deliveryFee',
+          name: '邮费',
+          value: deliveryFee != null ? deliveryFee : null
+        }
+      ]
+      total = subTotal;
+      allCharges.forEach((aCharge)=>{
+        if (aCharge.value != null) {
+          total += aCharge.value;
+        }
+      });
+
+      result = {
+        type: stockLocation,
+        items: items,
+        deliveryFee: deliveryFee,
         charges: allCharges,
         total: total,
         subTotal: subTotal,
