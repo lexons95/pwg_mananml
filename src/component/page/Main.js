@@ -91,18 +91,18 @@ const des3 = [
     return (
       <div style ={{padding: '35px'}}>
         <div>
-          <h1>斯坦尼斯斗草狂欢节</h1>
-          <div>活动时间2020年7月8日-2020年7月31日</div>
-          <img src = {wallpaper} className = 'main-wallpaper' />
+          {/* <h1>斯坦尼斯斗草狂欢节</h1> */}
+          {/* <div>活动时间2020年7月8日-2020年7月31日</div> */}
+          <img src={wallpaper} className = 'main-wallpaper' />
         </div>
 
-        <div style = {{textAlign: 'left', marginTop: '40px'}}>
+        {/* <div style = {{textAlign: 'left', marginTop: '40px'}}>
           <Divider orientation="left">活动明细</Divider>
 
           <div className="main-section-container">
 
               <div className = "main-style">
-                {/*<img src = {background} className = 'main-background' /> */}
+
               </div>
 
               <List
@@ -139,7 +139,7 @@ const des3 = [
               <p>我们是东南亚成长最快的烟草和烟斗代理商和零售商，市场遍布亚洲。我们的理念是给我们的客户带来世界上最好的烟草和独一无二的品吸体验。</p>
               <p>我们十分注重圈子文化的培养，成为我们圈子的一员，分享你觉得好的东西，让四海之内志同道合的人成为好友；一切产品，一切的热爱都是载体，这是形成圈子的基石，彼此珍惜圈子群，共同维护圈子内良好的环境，多交流多沟通，和平共处，营造良好氛围。</p>
             </div>
-          </div>
+          </div> */}
 
           {/*<div style = {{marginTop: '40px'}}>
             <Divider orientation="left" >海关税费</Divider>
@@ -149,6 +149,67 @@ const des3 = [
 
       </div>
     );
+    // return (
+    //   <div style ={{padding: '35px'}}>
+    //     <div>
+    //       <h1>斯坦尼斯斗草狂欢节</h1>
+    //       <div>活动时间2020年7月8日-2020年7月31日</div>
+    //       <img src = {wallpaper} className = 'main-wallpaper' />
+    //     </div>
+
+    //     <div style = {{textAlign: 'left', marginTop: '40px'}}>
+    //       <Divider orientation="left">活动明细</Divider>
+
+    //       <div className="main-section-container">
+
+    //           <div className = "main-style">
+    //             {/*<img src = {background} className = 'main-background' /> */}
+    //           </div>
+
+    //           <List
+    //             size="small"
+    //             header={<div style = {{fontWeight: 'bold'}}></div>}
+    //             footer={<div style = {{textAlign: 'center'}}>Share & Enjoy</div>}
+    //             dataSource={data}
+    //             renderItem={item => <List.Item className = "main-activityItem">{item}</List.Item>}
+    //           />
+    //       </div>
+
+    //         <Divider orientation="left" style = {{marginTop: '40px'}}>海淘小贴士</Divider>
+    //         <List
+    //           size="small"
+    //           header={<div style = {{fontWeight: 'bold', textAlign:'left'}}>一. 关于邮费和运输</div>}
+    //           dataSource={des1}
+    //           renderItem={item => <List.Item>{item}</List.Item>}
+    //         />
+    //         <List
+    //           size="small"
+    //           header={<div style = {{fontWeight: 'bold'}}>二. 关于退运</div>}
+    //           dataSource = {des2}
+    //           renderItem={item => <List.Item>{item}</List.Item>}
+    //         />
+    //         <List
+    //           size="small"
+    //           header={<div style = {{fontWeight: 'bold'}}>三. 关于退货</div>}
+    //           dataSource = {des3}
+    //           renderItem={item => <List.Item>{item}</List.Item>}
+    //         />
+
+    //         <Divider orientation="left" style = {{marginTop: '40px'}}>关于我们</Divider>
+    //         <div>
+    //           <p>我们是东南亚成长最快的烟草和烟斗代理商和零售商，市场遍布亚洲。我们的理念是给我们的客户带来世界上最好的烟草和独一无二的品吸体验。</p>
+    //           <p>我们十分注重圈子文化的培养，成为我们圈子的一员，分享你觉得好的东西，让四海之内志同道合的人成为好友；一切产品，一切的热爱都是载体，这是形成圈子的基石，彼此珍惜圈子群，共同维护圈子内良好的环境，多交流多沟通，和平共处，营造良好氛围。</p>
+    //         </div>
+    //       </div>
+
+    //       {/*<div style = {{marginTop: '40px'}}>
+    //         <Divider orientation="left" >海关税费</Divider>
+    //         <Table dataSource={dataSource} columns={columns} pagination = {false}/>
+    //       </div>*/}
+
+
+    //   </div>
+    // );
   }
   else {
     let logoLink = null;
