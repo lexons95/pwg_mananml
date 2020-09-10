@@ -31,7 +31,7 @@ export const getInventoryVariants = (productVariants, inventoryVariants) => {
   if (productVariants) {
     variantKeys.forEach((aKey, index)=>{
       let value = ""
-      if (inventoryVariants[aKey]) {
+      if (inventoryVariants && inventoryVariants[aKey]) {
         value = inventoryVariants[aKey];
         label += `${inventoryVariants[aKey]}${variantKeys.length - 1 != index ? " / " : ""}`
       }
