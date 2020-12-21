@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Button, Avatar, Table, Descriptions, Typography, Popconfirm, Collapse, Form, Input, Space, Checkbox, Modal } from 'antd';
 import { PlusOutlined, MinusOutlined, InfoCircleOutlined} from '@ant-design/icons';
-import { useMutation } from "@apollo/react-hooks";
-import gql from 'graphql-tag';
+import { useMutation, gql } from "@apollo/client";
 
 import { isBetween, cartCalculation, plusItemQty, minusItemQty, removeItemFromCart, defaultImage_system, configId } from '../../../utils/Constants';
 import { useConfigCache, useCartCache, setCartCache, useProductsQuery, useCustomerCache, setCustomerCache } from '../../../utils/customHook';
@@ -361,7 +360,7 @@ const CartDrawer = (props) => {
                 <td>96</td>
               </tr>
               <tr>
-                <td>> 2</td>
+                <td>{"> 2"}</td>
                 <td>116</td>
               </tr>
             </tbody>
