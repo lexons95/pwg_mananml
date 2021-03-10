@@ -114,7 +114,7 @@ const OrderInfo = (props) => {
                 column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
                 style={{maxWidth:"100%"}}
               >
-                <Descriptions.Item label={"邮费"}>{order.deliveryFee ? order.deliveryFee : 0}</Descriptions.Item>
+                {/* <Descriptions.Item label={"邮费"}>{order.deliveryFee ? order.deliveryFee : 0}</Descriptions.Item> */}
                 {
                   extraCharges.length > 0 ? 
                   extraCharges.map((aCharge, index)=>{

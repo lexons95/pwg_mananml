@@ -34,6 +34,24 @@ const des3 = [
   '（2）非产品质量问题，不接受客户退货退款请求。'
 ];
 
+const des4 = `
+开春海淘季
+ 
+海淘活动宗旨 share&enjoy
+因为疫情影响，网站休业，开春之际，网站重新启航
+同时为大家带来了部分新品
+Stanislaw为马男的主打斗草
+独家的 “四季” 和 “四元素” 欢迎大家品鉴
+Colts，Bison，马男德国.. .. 大家喜欢的RYO也一并上线
+欢迎和您身边的朋友分享，一起享受
+ 
+快递说明 
+此次快递为国际快递，周期为2周左右
+发货周期为一周左右
+
+ 
+share&enjoy
+`
 //
 // const dataSource = [
 //   {
@@ -92,7 +110,8 @@ const des3 = [
         <div>
           {/* <h1>斯坦尼斯斗草狂欢节</h1> */}
           {/* <div>活动时间2020年7月8日-2020年7月31日</div> */}
-          <img src={wallpaper} className = 'main-wallpaper' />
+          {/* <img src={wallpaper} className = 'main-wallpaper' /> */}
+          <pre>{des4}</pre>
         </div>
 
         {/* <div style = {{textAlign: 'left', marginTop: '40px'}}>

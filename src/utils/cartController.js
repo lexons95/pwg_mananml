@@ -99,11 +99,14 @@ const placeOrderConditions = [
     type: 'range',
     property: 'weight',
     min: 0,
-    max: 3000
+    max: 2000
   }
 ]
 
-const deliveryFeeMethods = [
+// before 20210303
+const baseWeight2 = 300;
+const maxWeight2 = 3000;
+const deliveryFeeMethods2 = [
   {
     code: 'deliveryFee',
     type: 'static',
@@ -139,7 +142,46 @@ const deliveryFeeMethods = [
   }
 ]
 
-export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []) => {
+const baseWeight = 200;
+const maxWeight = 2000;
+const deliveryFeeMethods = [
+  {
+    code: 'deliveryFee',
+    type: 'static',
+    defaultValue: 123
+  },
+  {
+    code: 'deliveryFee',
+    type: 'dynamic',
+    defaultValue: 160,
+    conditions: [
+      {
+        type: 'range',
+        property: 'weight',
+        min: 0,
+        max: 1000,
+        value: 160
+      }, 
+      {
+        type: 'range',
+        property: 'weight',
+        min: 1000,
+        max: 1500,
+        value: 190
+      },
+      {
+        type: 'range',
+        property: 'weight',
+        min: 1500,
+        max: 2000,
+        value: 220
+      }
+    ]
+  }
+]
+
+
+export const cartCalculation2 = (items = [], deliveryFee = 0, extraCharges = []) => {
   let result = {
     type: stockLocation,
     items: [],
@@ -165,39 +207,7 @@ export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []
     })
   
     if (stockLocation == '0') {
-      /*
-      max weight: 2kg
-  
-      delivery fee range: 
-      0 ~ 1 kg (80)
-      1 ~ 2 kg (96)
-  
-      custom conditions:
-      A 5 草 free 1 皇室 SXB 15
-      B 10 草 free 2 皇室 SXB 30
-      C 15 草 free 3 皇室 SXB 55
-      D 20 草 free 4 皇室 SXB 70
-      E 25 草 free 5 皇室 SXB 90
-      */
-  
-      // console.log('itemsitems',items)
-  
-      
-  
-      // const customChargesFields = [
-      //   {
-      //     type: 'boolean',
-      //     property: 'qty',
-      //     formula: (items)
-      //   }
-      // ]
-      // A 5 草 free 1 皇室 SXB 15
-      // B 10 草 free 2 皇室 SXB 30
-      // C 15 草 free 3 皇室 SXB 55
-      // D 20 草 free 4 皇室 SXB 70
-      // E 25 草 free 5 皇室 SXB 90
-      
-      let initialWeight = 300;
+      let initialWeight = baseWeight;
       let allowPlacingOrder = true;
       let message = "";
       let deliveryFeeResult = null;
@@ -228,7 +238,7 @@ export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []
       }
       
   
-      let totalWeight = getTotalFromItems(items, 'weight', 300);
+      let totalWeight = getTotalFromItems(items, 'weight', baseWeight);
       // console.log('totalWeight',totalWeight)
   
       let allCharges = [
@@ -259,7 +269,7 @@ export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []
       }
     }
     else {
-      let initialWeight = 300;
+      let initialWeight = baseWeight;
       let allowPlacingOrder = true;
       let message = "";
   
@@ -274,7 +284,7 @@ export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []
         }
       }
 
-      let totalWeight = getTotalFromItems(items, 'weight', 300);
+      let totalWeight = getTotalFromItems(items, 'weight', baseWeight);
       let allCharges = [
         {
           code: 'deliveryFee',
@@ -306,8 +316,8 @@ export const cartCalculation_1 = (items = [], deliveryFee = 0, extraCharges = []
 
 }
 
-const maxOrderWeight = 3000;
-const baseOrderWeight = 300;
+const maxOrderWeight = maxWeight;
+const baseOrderWeight = baseWeight;
 export const cartCalculation = (items = [], promotions = []) => {
   let configCache = getConfigCache();
   let result = {

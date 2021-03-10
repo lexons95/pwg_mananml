@@ -8,6 +8,7 @@ import { format, isAfter } from 'date-fns';
 import { defaultImage_system, configId } from '../../../utils/Constants';
 import { handlePromotionsChecking, checkActivePromotions, cartCalculation, plusItemQty, minusItemQty, removeItemFromCart } from '../../../utils/cartController';
 import { useConfigCache, useCartCache, setCartCache, useProductsQuery, useCustomerCache, setCustomerCache } from '../../../utils/customHook';
+import { useCartCalculation } from '../../../utils/cartHooks';
 import { showMessage } from '../../../utils/component/notification';
 import Loading from '../../../utils/component/Loading';
 import OrderInfo from './OrderInfo';
@@ -285,7 +286,7 @@ const CartDrawer = (props) => {
             <tbody>
               <tr>
                 <th>最高重量</th>
-                <th>3kg</th>
+                <th>2kg</th>
               </tr>
               <tr>
                 <th>重量 (kg)</th>
@@ -293,15 +294,15 @@ const CartDrawer = (props) => {
               </tr>
               <tr>
                 <td>0 ~ 1</td>
-                <td>80</td>
+                <td>160</td>
               </tr>
               <tr>
-                <td>1 ~ 2</td>
-                <td>96</td>
+                <td>1 ~ 1.5</td>
+                <td>190</td>
               </tr>
               <tr>
-                <td>{"> 2"}</td>
-                <td>116</td>
+                <td>{"> 1.5"}</td>
+                <td>220</td>
               </tr>
             </tbody>
           </table>
@@ -315,7 +316,8 @@ const CartDrawer = (props) => {
   // runCheckPromotion(promoCode)
   let passedPromotions = handlePromotionsChecking(cartItems, promotions, promoCode);
   // let {allowOrder, totalWeight, ...cartCalculationResult} = cartCalculation(cartItems, deliveryFee, []);
-  let {allowOrder, totalWeight, ...cartCalculationResult} = cartCalculation(cartItems, passedPromotions);
+  // let {allowOrder, totalWeight, ...cartCalculationResult} = cartCalculation(cartItems, passedPromotions);
+  const {allowOrder, totalWeight, ...cartCalculationResult} = useCartCalculation(cartItems,passedPromotions);
 
   const cartTableFooter = () => {
 
@@ -354,7 +356,7 @@ const CartDrawer = (props) => {
       })
 
     }
-
+    
     return (
         <>
             <div className="cartDrawer-summary-footer">
