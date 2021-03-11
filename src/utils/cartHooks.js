@@ -22,12 +22,12 @@ const deliveryFeeMethods = {
     static: {
         code: 'deliveryFee',
         type: 'static',
-        defaultValue: 123
+        defaultValue: 220
     },
     dynamic: {
         code: 'deliveryFee',
         type: 'dynamic',
-        defaultValue: 160,
+        defaultValue: 220,
         conditions: [
             {
                 type: 'range',
@@ -79,13 +79,15 @@ export const useCartCalculation = (items=[], promotions=[]) => {
     
         // get total weight & subTotal
         items.forEach((anItem)=>{
-            if (anItem.onSale) {
-                let checkedSalePrice = anItem.salePrice ? anItem.salePrice : anItem.price;
-                subTotal += (checkedSalePrice * anItem.qty);
-            }
-            else {
-                subTotal += (anItem.price * anItem.qty);
-            }
+            let checkedSalePrice = anItem.onSale && anItem.salePrice != null ? anItem.salePrice : anItem.price;
+            subTotal += (checkedSalePrice * anItem.qty);
+            // if (anItem.onSale) {
+            //     let checkedSalePrice = anItem.salePrice ? anItem.salePrice : anItem.price;
+            //     subTotal += (checkedSalePrice * anItem.qty);
+            // }
+            // else {
+            //     subTotal += (anItem.price * anItem.qty);
+            // }
             totalWeight += (anItem.weight * anItem.qty);
         });
 
@@ -103,18 +105,34 @@ export const useCartCalculation = (items=[], promotions=[]) => {
             // custom shipping fee based on weights
             let foundMethod = deliveryFeeMethods[deliveryFeeType]
             if (foundMethod) {
-              // conditions's order affect the result, should arrange from lower range to higher range (deliveryFeeMethods[1].conditions)
-              foundMethod.conditions && foundMethod.conditions.forEach((aCondition)=>{
-                let checkResult = conditionRangeChecker(totalWeight, aCondition);
-                if (checkResult != null && checkResult.success) {
-                    deliveryFee = checkResult.value;
-                    allExtras.push({
-                        code: 'deliveryFee',
-                        name: '邮费',
-                        value: checkResult.value
-                    })
+                let conditionMatchedValue = null;
+                foundMethod.conditions && foundMethod.conditions.forEach((aCondition)=>{
+                    let compareResult = isBetween(totalWeight, aCondition.min, aCondition.max);
+                    if (compareResult) {
+                        conditionMatchedValue = aCondition.value;
+                    }
+                });
+                if (conditionMatchedValue == null) {
+                    conditionMatchedValue = foundMethod.defaultValue;
                 }
-              })
+                deliveryFee = conditionMatchedValue;
+                allExtras.push({
+                    code: 'deliveryFee',
+                    name: '邮费',
+                    value: conditionMatchedValue
+                })
+                // conditions's order affect the result, should arrange from lower range to higher range (deliveryFeeMethods[1].conditions)
+                // foundMethod.conditions && foundMethod.conditions.forEach((aCondition)=>{
+                //     let checkResult = conditionRangeChecker(totalWeight, aCondition);
+                //     if (checkResult != null && checkResult.success) {
+                //         deliveryFee = checkResult.value;
+                //         allExtras.push({
+                //             code: 'deliveryFee',
+                //             name: '邮费',
+                //             value: checkResult.value
+                //         })
+                //     }
+                // })
             }
         }
         else {
@@ -173,7 +191,7 @@ export const useCartCalculation = (items=[], promotions=[]) => {
         result = {
             type: stockLocation,
             items: items,
-            deliveryFee: deliveryFee,
+            deliveryFee: finalDeliveryFee,
             charges: allExtras,
             total: total,
             subTotal: subTotal,
@@ -198,7 +216,14 @@ const getTotalFromItems = (items, property, initial = 0) => {
   return total;
 }
 
-export const isBetween = (min = null, max = null, value = null, type = 'includeMin') => {
+const isBetween = (value, min, max) => {
+    let result = false;
+    if (value > min && value <= max) {
+        result = true;
+    }
+    return result;
+}
+export const isBetween2 = (min = null, max = null, value = null, type = 'includeMin') => {
   // include min -> value >= min && value < max
   // include max -> value > min && value <= max
 
